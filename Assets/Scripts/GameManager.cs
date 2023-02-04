@@ -4,15 +4,21 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    public static GameManager instance;
+
+    [SerializeField][Range(0,10)]
+    private float gameSpeed;
+
+    [SerializeField][Range(0.1f,1)]
+    private float dryRandomizer;
+
+    private void Awake() {
+        instance = this;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    /****************************************************************************************
+    GETTERS
+    ****************************************************************************************/
+    public float    GetGameSpeed() => gameSpeed;
+    public float    GetDryRandomizer() => dryRandomizer;
 }
