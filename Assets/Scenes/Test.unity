@@ -224,6 +224,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4266619757268303928, guid: 4d4ef8676c39b5844a2634ec791f1fae, type: 3}
+      propertyPath: plantPhasesList.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4266619757268303928, guid: 4d4ef8676c39b5844a2634ec791f1fae, type: 3}
+      propertyPath: plantPhasesList.Array.data[0].timeToDry
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4266619757268303928, guid: 4d4ef8676c39b5844a2634ec791f1fae, type: 3}
+      propertyPath: plantPhasesList.Array.data[0].timeToHeat
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4266619757268303928, guid: 4d4ef8676c39b5844a2634ec791f1fae, type: 3}
+      propertyPath: plantPhasesList.Array.data[0].phaseNumber
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4266619757268303928, guid: 4d4ef8676c39b5844a2634ec791f1fae, type: 3}
+      propertyPath: plantPhasesList.Array.data[0].timeToFertilize
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4266619757268303931, guid: 4d4ef8676c39b5844a2634ec791f1fae, type: 3}
       propertyPath: m_Name
       value: Plant (2)
@@ -282,6 +302,26 @@ PrefabInstance:
     - target: {fileID: 4266619757268303926, guid: 4d4ef8676c39b5844a2634ec791f1fae, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4266619757268303928, guid: 4d4ef8676c39b5844a2634ec791f1fae, type: 3}
+      propertyPath: plantPhasesList.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4266619757268303928, guid: 4d4ef8676c39b5844a2634ec791f1fae, type: 3}
+      propertyPath: plantPhasesList.Array.data[0].timeToDry
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4266619757268303928, guid: 4d4ef8676c39b5844a2634ec791f1fae, type: 3}
+      propertyPath: plantPhasesList.Array.data[0].timeToHeat
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4266619757268303928, guid: 4d4ef8676c39b5844a2634ec791f1fae, type: 3}
+      propertyPath: plantPhasesList.Array.data[0].phaseNumber
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4266619757268303928, guid: 4d4ef8676c39b5844a2634ec791f1fae, type: 3}
+      propertyPath: plantPhasesList.Array.data[0].timeToFertilize
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4266619757268303931, guid: 4d4ef8676c39b5844a2634ec791f1fae, type: 3}
       propertyPath: m_Name
@@ -505,6 +545,30 @@ PrefabInstance:
     - target: {fileID: 4266619757268303926, guid: 4d4ef8676c39b5844a2634ec791f1fae, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4266619757268303928, guid: 4d4ef8676c39b5844a2634ec791f1fae, type: 3}
+      propertyPath: plantSprites.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4266619757268303928, guid: 4d4ef8676c39b5844a2634ec791f1fae, type: 3}
+      propertyPath: plantPhasesList.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4266619757268303928, guid: 4d4ef8676c39b5844a2634ec791f1fae, type: 3}
+      propertyPath: plantPhasesList.Array.data[0].timeToDry
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4266619757268303928, guid: 4d4ef8676c39b5844a2634ec791f1fae, type: 3}
+      propertyPath: plantPhasesList.Array.data[0].timeToHeat
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4266619757268303928, guid: 4d4ef8676c39b5844a2634ec791f1fae, type: 3}
+      propertyPath: plantPhasesList.Array.data[0].phaseNumber
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4266619757268303928, guid: 4d4ef8676c39b5844a2634ec791f1fae, type: 3}
+      propertyPath: plantPhasesList.Array.data[0].timeToFertilize
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4266619757268303931, guid: 4d4ef8676c39b5844a2634ec791f1fae, type: 3}
       propertyPath: m_Name
