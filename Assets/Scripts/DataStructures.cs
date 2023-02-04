@@ -8,14 +8,20 @@ public enum PlantType
     Cactus
 }
 
-[System.Serializable]
-public struct   PlantPhase
+public enum FertilizerType
 {
-    public int     phaseNumber;
-    public Sprite  plantPhaseSprite;
-    public float   timeToWater;
-    public float   timeToHeat;
-    public float   timeToFertilize;
+    Rooting,
+    Rocks,
+    None
+}
+
+[System.Serializable]
+public struct   PlantInfo
+{
+    public float    timeToWater;
+    public float    timeToHeat;
+    public float    timeToFertilize;
+    PlantType       plantType;
 }
 
 public struct   StatsTimes

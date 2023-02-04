@@ -6,50 +6,48 @@ using UnityEngine.EventSystems;
 public class PlantBehavior : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
                                             IPointerEnterHandler, IPointerExitHandler
 {
-    [SerializeField] private PlantType          plantType;
-    [SerializeField] private List<PlantPhase>   plantPhasesList;
+    [SerializeField] private PlantInfo plantInfo;
+    [SerializeField] private RequesterBehavior waterRequester;
+    [SerializeField] private RequesterBehavior heatRequester;
+    [SerializeField] private RequesterBehavior fertilizerRequester;
 
-    private bool            watered = false;
-    private bool            heated = false;
-    private bool            fertilized = false;
-    private PlantPhase      activePhase;
     private SpriteRenderer  spriteRenderer;
     private StatsTimes      statsTimes;
 
+    [SerializeField][Range(1,4)]
+    public int plantNumber;
+
+    [HideInInspector] public bool watered = true;
+    [HideInInspector] public bool heated = true;
+    [HideInInspector] public bool fertilized = true;
+    [HideInInspector] public  FertilizerType  fertilizerNeeded;
+
     private void Start() 
     {
-        activePhase = plantPhasesList.Find(x => x.phaseNumber == 1);
+        statsTimes = new StatsTimes();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         UpdateTimes();
     }
 
-    private void    Update() 
+    private void    FixedUpdate() 
     {
-        UpdatePlantStatsControl();
-    }
 
-	private float   CalculateTimeRandomized(float time)
-    {
-        float rand;
-        rand = GameManager.instance.GetDryRandomizer();
-        return  (time * Random.Range(1 - rand, 1 + rand)) / GameManager.instance.GetGameSpeed();
+        UpdatePlantStatsControl();
     }
 
     private void    UpdateTimes()
     {
-        statsTimes.toWater = CalculateTimeRandomized(activePhase.timeToWater);
-        statsTimes.toHeat = CalculateTimeRandomized(activePhase.timeToHeat);
-        statsTimes.toFertilize = CalculateTimeRandomized(activePhase.timeToFertilize);
-    }
-
-    private void   Grow()
-    {
-        activePhase = plantPhasesList.Find(x => x.phaseNumber == activePhase.phaseNumber + 1);
-        spriteRenderer.sprite = activePhase.plantPhaseSprite;
+        statsTimes.toWater = TimeManager.CalculateTimeRandomized(plantInfo.timeToWater);
+        statsTimes.toHeat = TimeManager.CalculateTimeRandomized(plantInfo.timeToHeat);
+        statsTimes.toFertilize = TimeManager.CalculateTimeRandomized(plantInfo.timeToFertilize);
+        statsTimes.lastWater = 0;
+        statsTimes.lastHeat = 0;
+        statsTimes.lastFertilize = 0;
     }
 
     	private void Die()
 	{
-		throw new System.NotImplementedException();
+		//throw new System.NotImplementedException();
 	}
 
     /****************************************************************************************
@@ -72,7 +70,7 @@ public class PlantBehavior : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
         }
         else if (watered && statsTimes.lastWater > statsTimes.toWater)
         {
-            DryPlant();
+            RequestWater();
         }
     }
 
@@ -85,7 +83,7 @@ public class PlantBehavior : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
         }
         else if (heated && statsTimes.lastHeat > statsTimes.toHeat)
         {
-            throw new System.NotImplementedException();
+            RequestHeat();
         }
     }
 
@@ -98,7 +96,28 @@ public class PlantBehavior : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
         }
         else if (fertilized && statsTimes.lastFertilize > statsTimes.toFertilize)
         {
-            throw new System.NotImplementedException();
+            RequestFertilizer();
+        }
+    }
+
+    private void    RandomizeFertilizer()
+    {
+        int rand = Random.Range(1,4);
+
+        if (rand == 1)
+        {
+            fertilizerRequester.SetColor(Color.yellow);
+            fertilizerNeeded = FertilizerType.Rooting;
+        }
+        else if (rand == 2)
+        {
+            fertilizerRequester.SetColor(Color.red);
+            fertilizerNeeded = FertilizerType.Rocks;
+        }
+        else
+        {
+            fertilizerRequester.SetColor(Color.black);
+            fertilizerNeeded = FertilizerType.None;
         }
     }
 
@@ -110,26 +129,42 @@ public class PlantBehavior : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     {
         statsTimes.lastWater = 0;
         watered = true;
-        spriteRenderer.color = Color.green;
-        //TODO: Proper reaction to water
+        waterRequester.SetColor(Color.white);
     }
 
-    private void    DryPlant()
+    private void    RequestWater()
     {
         watered = false;
-        statsTimes.toWater = CalculateTimeRandomized(activePhase.timeToWater);
-        spriteRenderer.color = Color.gray;
-        //TODO: Proper reaction to dry
+        statsTimes.toWater = TimeManager.CalculateTimeRandomized(plantInfo.timeToWater);
+        waterRequester.SetColor(Color.blue);
     }
 
-    private void    FertilizePlant()
+    public void    FertilizePlant()
     {
-        //TODO: Implement
+        statsTimes.lastFertilize = 0;
+        fertilized = true;
+        fertilizerRequester.SetColor(Color.white);
     }
 
-    private void    HeatPlant()
+    private void    RequestFertilizer()
     {
-        //TODO: Implement
+        RandomizeFertilizer();
+        fertilized = false;
+        statsTimes.toFertilize = TimeManager.CalculateTimeRandomized(plantInfo.timeToFertilize);
+    }
+
+    public void    HeatPlant()
+    {
+        statsTimes.lastHeat = 0;
+        heated = true;
+        heatRequester.SetColor(Color.white);
+    }
+
+    private void    RequestHeat()
+    {
+        heated = false;
+        statsTimes.toHeat = TimeManager.CalculateTimeRandomized(plantInfo.timeToHeat);
+        heatRequester.SetColor(Color.magenta);
     }
 
     /****************************************************************************************

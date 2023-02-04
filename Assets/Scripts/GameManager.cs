@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
     private float gameSpeed;
 
     [SerializeField][Range(0.1f,1)]
-    private float dryRandomizer;
+    private float timesRandomizer;
 
     private void Awake() {
         instance = this;
@@ -20,5 +20,5 @@ public class GameManager : MonoBehaviour
     GETTERS
     ****************************************************************************************/
     public float    GetGameSpeed() => gameSpeed;
-    public float    GetDryRandomizer() => dryRandomizer;
+    public float    GetTimesRandomizer() => timesRandomizer;
 }
