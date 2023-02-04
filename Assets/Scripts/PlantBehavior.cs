@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlantBehavior : MonoBehaviour
 {
+    public float agua;
     // Start is called before the first frame update
     void Start()
     {
