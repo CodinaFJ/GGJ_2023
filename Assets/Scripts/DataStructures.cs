@@ -20,6 +20,7 @@ public struct   PlantInfo
 {
     public float    timeToWater;
     public float    timeToHeat;
+    public float    timeToCold;
     public float    timeToFertilize;
     PlantType       plantType;
 }
@@ -28,8 +29,9 @@ public struct   StatsTimes
 {
     public float    toWater;
     public float    toHeat;
+    public float    toCold;
     public float    toFertilize;
     public float    lastWater;
-    public float    lastHeat;
+    public float    lastHeatChange;
     public float    lastFertilize;
 }

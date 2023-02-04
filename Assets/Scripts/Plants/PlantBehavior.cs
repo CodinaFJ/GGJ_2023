@@ -10,6 +10,7 @@ public class PlantBehavior : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     [SerializeField] private RequesterBehavior waterRequester;
     [SerializeField] private RequesterBehavior heatRequester;
     [SerializeField] private RequesterBehavior fertilizerRequester;
+    [SerializeField] private float inicialTimesRandomizer;
 
     private SpriteRenderer  spriteRenderer;
     private StatsTimes      statsTimes;
@@ -18,7 +19,8 @@ public class PlantBehavior : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     public int plantNumber;
 
     [HideInInspector] public bool watered = true;
-    [HideInInspector] public bool heated = true;
+    [HideInInspector] public bool heatOk = true;
+    [HideInInspector] public bool heatOn = false;
     [HideInInspector] public bool fertilized = true;
     [HideInInspector] public  FertilizerType  fertilizerNeeded;
 
@@ -39,10 +41,11 @@ public class PlantBehavior : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     {
         statsTimes.toWater = TimeManager.CalculateTimeRandomized(plantInfo.timeToWater);
         statsTimes.toHeat = TimeManager.CalculateTimeRandomized(plantInfo.timeToHeat);
+        statsTimes.toCold = TimeManager.CalculateTimeRandomized(plantInfo.timeToCold);
         statsTimes.toFertilize = TimeManager.CalculateTimeRandomized(plantInfo.timeToFertilize);
-        statsTimes.lastWater = 0;
-        statsTimes.lastHeat = 0;
-        statsTimes.lastFertilize = 0;
+        statsTimes.lastWater = Random.Range(-inicialTimesRandomizer, 0);
+        statsTimes.lastHeatChange = Random.Range(-inicialTimesRandomizer, 0);
+        statsTimes.lastFertilize = Random.Range(-inicialTimesRandomizer, 0);
     }
 
     	private void Die()
@@ -76,14 +79,18 @@ public class PlantBehavior : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
 
     private void    UpdateHeatStats()
     {
-        statsTimes.lastHeat += Time.deltaTime;
-        if (!heated && statsTimes.lastHeat > statsTimes.toHeat * 2)
+        statsTimes.lastHeatChange += Time.deltaTime;
+        if (!heatOk && statsTimes.lastHeatChange > statsTimes.toHeat * 2)
         {
             Die();
         }
-        else if (heated && statsTimes.lastHeat > statsTimes.toHeat)
+        else if (heatOk && statsTimes.lastHeatChange > statsTimes.toHeat && !heatOn)
         {
             RequestHeat();
+        }
+        else if (heatOk && statsTimes.lastHeatChange > statsTimes.toCold && heatOn)
+        {
+            RequestCold();
         }
     }
 
@@ -153,18 +160,27 @@ public class PlantBehavior : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
         statsTimes.toFertilize = TimeManager.CalculateTimeRandomized(plantInfo.timeToFertilize);
     }
 
-    public void    HeatPlant()
+    public void    HeatSwitch()
     {
-        statsTimes.lastHeat = 0;
-        heated = true;
+        statsTimes.lastHeatChange = 0;
+        if (heatOn) heatOn = false;
+        else heatOn = true;
+        heatOk = true;
         heatRequester.SetColor(Color.white);
     }
 
     private void    RequestHeat()
     {
-        heated = false;
+        heatOk = false;
         statsTimes.toHeat = TimeManager.CalculateTimeRandomized(plantInfo.timeToHeat);
         heatRequester.SetColor(Color.magenta);
+    }
+
+    private void    RequestCold()
+    {
+        heatOk = false;
+        statsTimes.toCold = TimeManager.CalculateTimeRandomized(plantInfo.timeToCold);
+        heatRequester.SetColor(Color.cyan);
     }
 
     /****************************************************************************************

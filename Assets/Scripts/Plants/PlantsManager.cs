@@ -33,9 +33,14 @@ public class PlantsManager : MonoBehaviour
         plant.FertilizePlant();
     }
 
-    public void HeatPlant(int plantNumber)
+    public void SwitchHeatPlant(int plantNumber)
     {
-        
+        PlantBehavior  plant;
+
+        plant = plantsList.Find(x => x.plantNumber == plantNumber);
+        if (!plant)
+            return ;
+        plant.HeatSwitch();
     }
 
 }
