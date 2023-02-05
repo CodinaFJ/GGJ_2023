@@ -6,7 +6,9 @@ public class RequesterBehavior : MonoBehaviour
 {
     SpriteRenderer spriteRenderer;
 
-    void Start()
+    [SerializeField] List<RequestSpriteTagged> requestSprites;
+
+    void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
@@ -14,5 +16,10 @@ public class RequesterBehavior : MonoBehaviour
     public void SetColor(Color color)
     {
         spriteRenderer.color = color;
+    }
+
+    public void SetSprite(RequestType requestType)
+    {
+        spriteRenderer.sprite = requestSprites.Find(x => x.requestType == requestType).sprite;
     }
 }

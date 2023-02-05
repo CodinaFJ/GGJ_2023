@@ -15,6 +15,17 @@ public enum FertilizerType
     None
 }
 
+public enum RequestType
+{
+    Water,
+    Cold,
+    Heat,
+    BasicFert,
+    RootingFert,
+    RocksFert,
+    None
+}
+
 [System.Serializable]
 public struct   PlantInfo
 {
@@ -34,4 +45,11 @@ public struct   StatsTimes
     public float    lastWater;
     public float    lastHeatChange;
     public float    lastFertilize;
+}
+
+[System.Serializable]
+public struct RequestSpriteTagged
+{
+    public Sprite sprite;
+    public RequestType requestType;
 }

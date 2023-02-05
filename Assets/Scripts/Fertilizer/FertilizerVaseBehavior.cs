@@ -8,6 +8,11 @@ public class FertilizerVaseBehavior : MonoBehaviour, IPointerDownHandler, IPoint
                                                     IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private float  timeToFill;
+    [SerializeField] private Sprite emptyVase;
+    [SerializeField] private Sprite basicVase;
+    [SerializeField] private Sprite rocksVase;
+    [SerializeField] private Sprite rootingVase;
+
 
     private float   calcTimeToFill;
     private float   timeFilling = 0;
@@ -37,16 +42,16 @@ public class FertilizerVaseBehavior : MonoBehaviour, IPointerDownHandler, IPoint
         PlantsManager.instance.FertilizePlant(topping);
         filled = false;
         topping = FertilizerType.None;
-		GetComponent<SpriteRenderer>().color = Color.white;
+		GetComponent<SpriteRenderer>().sprite = emptyVase;
 	}
 
     public void AddTopping(FertilizerType fertilizerType)
     {
         topping = fertilizerType;
         if (fertilizerType == FertilizerType.Rooting)
-            GetComponent<SpriteRenderer>().color = Color.yellow;
+            GetComponent<SpriteRenderer>().sprite = rootingVase;
         else if (fertilizerType == FertilizerType.Rocks)
-            GetComponent<SpriteRenderer>().color = Color.red;
+            GetComponent<SpriteRenderer>().sprite = rocksVase;
     }
 
     /****************************************************************************************
@@ -59,7 +64,6 @@ public class FertilizerVaseBehavior : MonoBehaviour, IPointerDownHandler, IPoint
             return ;
 		filling = true;
         this.gameObject.transform.position = fillingPosition;
-        GetComponent<SpriteRenderer>().color = Color.gray;
 	}
 
     private void    UpdateFillVase()
@@ -76,7 +80,7 @@ public class FertilizerVaseBehavior : MonoBehaviour, IPointerDownHandler, IPoint
 	{
 		filled = true;
         filling = false;
-        GetComponent<SpriteRenderer>().color = Color.black;
+        GetComponent<SpriteRenderer>().sprite = basicVase;
 	}
 
     private void    ReturnVaseToCounter()
