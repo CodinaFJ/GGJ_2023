@@ -9,12 +9,16 @@ public class HeaterSwitchBehavior : MonoBehaviour, IPointerDownHandler, IPointer
     [SerializeField][Range(1,4)]
     public int plantNumber;
 
+    [SerializeField] Sprite buttonOn;
+    [SerializeField] Sprite buttonOff;
+    
+
     private bool state = false;
     private SpriteRenderer spriteRenderer;
 
     private void Start() {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        spriteRenderer.color = Color.cyan;
+        spriteRenderer.sprite = buttonOff;
     }
 
     private void Switch()
@@ -22,12 +26,12 @@ public class HeaterSwitchBehavior : MonoBehaviour, IPointerDownHandler, IPointer
         if (state)
         {
             state = false;
-            spriteRenderer.color = Color.cyan;
+            spriteRenderer.sprite = buttonOff;
         }
         else
         {
             state = true;
-            spriteRenderer.color = Color.magenta;
+            spriteRenderer.sprite = buttonOn;
         }
         PlantsManager.instance.SwitchHeatPlant(plantNumber);
     }

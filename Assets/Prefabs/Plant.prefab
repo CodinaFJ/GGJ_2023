@@ -76,12 +76,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 7a19c12dbc92d6a428ddd9ff55a434d1, type: 3}
+  m_Sprite: {fileID: -676416561, guid: 7a19c12dbc92d6a428ddd9ff55a434d1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2.1111112, y: 3.0092592}
+  m_Size: {x: 2.1666667, y: 4.388889}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -104,11 +104,11 @@ MonoBehaviour:
     timeToHeat: 0
     timeToCold: 0
     timeToFertilize: 0
+  inicialTimesRandomizer: 0
+  plantNumber: 0
   waterRequester: {fileID: 0}
   heatRequester: {fileID: 0}
   fertilizerRequester: {fileID: 0}
-  inicialTimesRandomizer: 0
-  plantNumber: 0
   watered: 1
   heatOk: 1
   heatOn: 0
@@ -131,8 +131,8 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.3148148, y: 4.6296296}
-    newSize: {x: 2.1111112, y: 3.0092592}
+    oldSize: {x: 2.1666667, y: 4.388889}
+    newSize: {x: 2.1666667, y: 4.388889}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0

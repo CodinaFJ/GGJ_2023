@@ -12,6 +12,7 @@ public class FertilizerVaseBehavior : MonoBehaviour, IPointerDownHandler, IPoint
     [SerializeField] private Sprite basicVase;
     [SerializeField] private Sprite rocksVase;
     [SerializeField] private Sprite rootingVase;
+    [SerializeField] HealthBar progressBar;
 
 
     private float   calcTimeToFill;
@@ -26,9 +27,10 @@ public class FertilizerVaseBehavior : MonoBehaviour, IPointerDownHandler, IPoint
     private void    Start() 
     {
         fillingPosition = GameObject.Find("Filler").transform.position;
-        calcTimeToFill = TimeManager.CalculateTimeRandomized(timeToFill);
+        calcTimeToFill = timeToFill;
         idlePosition = transform.position;
         topping = FertilizerType.None;
+        progressBar.gameObject.SetActive(false);
     }
 
     private void    Update() 
@@ -39,7 +41,8 @@ public class FertilizerVaseBehavior : MonoBehaviour, IPointerDownHandler, IPoint
 
     private void FertilizePlant()
 	{
-        PlantsManager.instance.FertilizePlant(topping);
+        if (!PlantsManager.instance.FertilizePlant(topping))
+            return ;
         filled = false;
         topping = FertilizerType.None;
 		GetComponent<SpriteRenderer>().sprite = emptyVase;
@@ -64,11 +67,14 @@ public class FertilizerVaseBehavior : MonoBehaviour, IPointerDownHandler, IPoint
             return ;
 		filling = true;
         this.gameObject.transform.position = fillingPosition;
+        progressBar.gameObject.SetActive(true);
+        progressBar.SetSize(0);
 	}
 
     private void    UpdateFillVase()
     {
         timeFilling += Time.deltaTime;
+        progressBar.SetSize(timeFilling / calcTimeToFill);
         if (timeFilling > calcTimeToFill)
         {
             FinishFillVase();
@@ -81,6 +87,7 @@ public class FertilizerVaseBehavior : MonoBehaviour, IPointerDownHandler, IPoint
 		filled = true;
         filling = false;
         GetComponent<SpriteRenderer>().sprite = basicVase;
+        progressBar.gameObject.SetActive(false);
 	}
 
     private void    ReturnVaseToCounter()

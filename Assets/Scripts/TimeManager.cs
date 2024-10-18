@@ -8,6 +8,6 @@ public class TimeManager
     {
         float rand;
         rand = GameManager.instance.GetTimesRandomizer();
-        return  (time * Random.Range(1 - rand, 1 + rand)) / GameManager.instance.GetGameSpeed();
+        return  (time / GameManager.instance.GetGameSpeed()); //* Random.Range(1 - rand, 1 + rand) / GameManager.instance.GetGameSpeed());
     }
 }

@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2135585597343286014, guid: 5aa8b770bc43046bc8d993d0d5b7f4a5, type: 3}
+  m_Sprite: {fileID: 1643453707, guid: 5ee042aaa1f97dd49850275b42ed56ca, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -100,6 +100,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   plantNumber: 0
+  buttonOn: {fileID: 1430641681, guid: 77c483e27aec3324abde8c54bd67a5b4, type: 3}
+  buttonOff: {fileID: 1643453707, guid: 5ee042aaa1f97dd49850275b42ed56ca, type: 3}
 --- !u!58 &1080955438524335625
 CircleCollider2D:
   m_ObjectHideFlags: 0

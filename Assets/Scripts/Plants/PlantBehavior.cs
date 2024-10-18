@@ -10,6 +10,7 @@ public class PlantBehavior : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     [SerializeField] private float inicialTimesRandomizer;
     [SerializeField][Range(1,4)]
     public int plantNumber;
+    [SerializeField] Heater heater;
 
     private SpriteRenderer  spriteRenderer;
     private StatsTimes      statsTimes;
@@ -35,19 +36,24 @@ public class PlantBehavior : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
 
     private void    FixedUpdate() 
     {
-
+        UpdateTimes();
         UpdatePlantStatsControl();
     }
 
-    private void    UpdateTimes()
+    private void    InitialUpdateTimes()
+    {
+        UpdateTimes();
+        statsTimes.lastWater = Random.Range(-inicialTimesRandomizer, 0);
+        statsTimes.lastHeatChange = Random.Range(-inicialTimesRandomizer, 0);
+        statsTimes.lastFertilize = Random.Range(-inicialTimesRandomizer, 0);
+    }
+
+    private void UpdateTimes()
     {
         statsTimes.toWater = TimeManager.CalculateTimeRandomized(plantInfo.timeToWater);
         statsTimes.toHeat = TimeManager.CalculateTimeRandomized(plantInfo.timeToHeat);
         statsTimes.toCold = TimeManager.CalculateTimeRandomized(plantInfo.timeToCold);
         statsTimes.toFertilize = TimeManager.CalculateTimeRandomized(plantInfo.timeToFertilize);
-        statsTimes.lastWater = Random.Range(-inicialTimesRandomizer, 0);
-        statsTimes.lastHeatChange = Random.Range(-inicialTimesRandomizer, 0);
-        statsTimes.lastFertilize = Random.Range(-inicialTimesRandomizer, 0);
     }
 
     private void InitilizeRequesters()
@@ -59,7 +65,8 @@ public class PlantBehavior : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
 
     	private void Die()
 	{
-		//throw new System.NotImplementedException();
+        Debug.Log("GAME OVER");
+		GameManager.instance.Die();
 	}
 
     /****************************************************************************************
@@ -76,6 +83,8 @@ public class PlantBehavior : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     private void    UpdateWaterStats()
     {
         statsTimes.lastWater += Time.deltaTime;
+        if (!watered && statsTimes.lastWater < statsTimes.toWater * 2)
+            waterRequester.SetSize(1 + ((statsTimes.toWater - statsTimes.lastWater) / (statsTimes.toWater)));
         if (!watered && statsTimes.lastWater > statsTimes.toWater * 2)
         {
             Die();
@@ -89,6 +98,10 @@ public class PlantBehavior : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     private void    UpdateHeatStats()
     {
         statsTimes.lastHeatChange += Time.deltaTime;
+        if (!heatOk && statsTimes.lastHeatChange < statsTimes.toHeat * 2 && heatOn)
+            heatRequester.SetSize(1 + ((statsTimes.toHeat - statsTimes.lastHeatChange) / (statsTimes.toHeat)));
+        else if (!heatOk && statsTimes.lastHeatChange < statsTimes.toCold * 2 && !heatOn)
+            heatRequester.SetSize(1 + ((statsTimes.toCold - statsTimes.lastHeatChange) / (statsTimes.toCold)));
         if (!heatOk && statsTimes.lastHeatChange > statsTimes.toHeat * 2)
         {
             Die();
@@ -106,6 +119,8 @@ public class PlantBehavior : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     private void    UpdateFetilizerStats()
     {
         statsTimes.lastFertilize += Time.deltaTime;
+        if (!fertilized && statsTimes.lastFertilize < statsTimes.toFertilize * 2)
+            fertilizerRequester.SetSize(1 + ((statsTimes.toFertilize - statsTimes.lastFertilize) / (statsTimes.toFertilize)));
         if (!fertilized && statsTimes.lastFertilize > statsTimes.toFertilize * 2)
         {
             Die();
@@ -143,19 +158,22 @@ public class PlantBehavior : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     
     private void    WaterPlant()
     {
-        if (!GameManager.instance.GetWaterCanAvailable() || watered)
+        if (watered)
             return ;
         statsTimes.lastWater = 0;
         watered = true;
-        GameManager.instance.UseWaterCan();
+        waterRequester.SetBar(false);
+        //GameManager.instance.UseWaterCan();
         waterRequester.SetSprite(RequestType.None);
+        statsTimes.toWater = TimeManager.CalculateTimeRandomized(plantInfo.timeToWater);
     }
 
     private void    RequestWater()
     {
         watered = false;
-        statsTimes.toWater = TimeManager.CalculateTimeRandomized(plantInfo.timeToWater);
         waterRequester.SetSprite(RequestType.Water);
+        waterRequester.SetBar(true);
+        waterRequester.SetSize(1);
     }
 
     public void    FertilizePlant()
@@ -165,13 +183,16 @@ public class PlantBehavior : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
         statsTimes.lastFertilize = 0;
         fertilized = true;
         fertilizerRequester.SetSprite(RequestType.None);
+        statsTimes.toFertilize = TimeManager.CalculateTimeRandomized(plantInfo.timeToFertilize);
+        fertilizerRequester.SetBar(false);
     }
 
     private void    RequestFertilizer()
     {
         RandomizeFertilizer();
         fertilized = false;
-        statsTimes.toFertilize = TimeManager.CalculateTimeRandomized(plantInfo.timeToFertilize);
+        fertilizerRequester.SetBar(true);
+        fertilizerRequester.SetSize(1);
     }
 
     public void    HeatSwitch()
@@ -181,23 +202,36 @@ public class PlantBehavior : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
             heatRequester.SetSprite(RequestType.None);
             statsTimes.lastHeatChange = 0;
         }
-        if (heatOn) heatOn = false;
-        else heatOn = true;
+        if (heatOn)
+        {
+            statsTimes.toCold = TimeManager.CalculateTimeRandomized(plantInfo.timeToCold);
+            heatOn = false;
+            heater.TurnOff();
+        } 
+        else
+        {
+            statsTimes.toHeat = TimeManager.CalculateTimeRandomized(plantInfo.timeToHeat);
+            heatOn = true;
+            heater.TurnOn();
+        }
         heatOk = true;
+        heatRequester.SetBar(false);
     }
 
     private void    RequestHeat()
     {
         heatOk = false;
-        statsTimes.toHeat = TimeManager.CalculateTimeRandomized(plantInfo.timeToHeat);
         heatRequester.SetSprite(RequestType.Heat);
+        heatRequester.SetBar(true);
+        heatRequester.SetSize(1);
     }
 
     private void    RequestCold()
     {
         heatOk = false;
-        statsTimes.toCold = TimeManager.CalculateTimeRandomized(plantInfo.timeToCold);
         heatRequester.SetSprite(RequestType.Cold);
+        heatRequester.SetBar(true);
+        heatRequester.SetSize(1);
     }
 
     /****************************************************************************************

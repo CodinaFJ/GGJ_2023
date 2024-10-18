@@ -23,14 +23,15 @@ public class PlantsManager : MonoBehaviour
         }
     }
 
-    public void FertilizePlant(FertilizerType fertilizerType)
+    public bool FertilizePlant(FertilizerType fertilizerType)
     {
         PlantBehavior  plant;
 
         plant = plantsList.Find(x => !x.fertilized && x.fertilizerNeeded == fertilizerType);
         if (!plant)
-            return ;
+            return false;
         plant.FertilizePlant();
+        return true;
     }
 
     public void SwitchHeatPlant(int plantNumber)
